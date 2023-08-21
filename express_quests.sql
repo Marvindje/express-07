@@ -66,6 +66,8 @@ CREATE TABLE users (
     language varchar(255) DEFAULT NULL
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8;
 
+ALTER TABLE users ADD hashedPassword varchar(255) NOT NULL;
+
 INSERT INTO
   users (firstname, lastname, email, city, language)
 VALUES
@@ -111,3 +113,12 @@ VALUES
     'Milan',
     'Spanish'
   );
+
+
+  UPDATE users SET hashedPassword = 'hashedPassword1' WHERE email = 'john.doe@example.com';
+UPDATE users SET hashedPassword = 'hashedPassword2' WHERE email = 'valeriy.appius@example.com';
+UPDATE users SET hashedPassword = 'hashedPassword3' WHERE email = 'ralf.geronimo@example.com';
+UPDATE users SET hashedPassword = 'hashedPassword4' WHERE email = 'maria.iskandar@example.com';
+UPDATE users SET hashedPassword = 'hashedPassword5' WHERE email = 'jane.doe@example.com';
+UPDATE users SET hashedPassword = 'hashedPassword6' WHERE email = 'johanna.martino@example.com';
+
