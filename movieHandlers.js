@@ -31,7 +31,6 @@ const getMovies = (req, res) => {
 
 const getMovieById = (req, res) => {
   const id = parseInt(req.params.id);
-
   const movie = movies.find((movie) => movie.id === id);
 
   if (movie != null) {
@@ -41,7 +40,46 @@ const getMovieById = (req, res) => {
   }
 };
 
+const postMovie = (req, res) => {
+  const newMovie = req.body;
+  newMovie.id = movies.length + 1; // Assign a new ID
+  movies.push(newMovie);
+  res.status(201).json(newMovie);
+};
+
+const deleteMovie = (req, res) => {
+    const id = parseInt(req.params.id);
+    const movieIndex = movies.findIndex((movie) => movie.id === id);
+
+    if (movieIndex === -1) {
+        return res.status(404).send("Movie not found");
+    }
+
+    movies.splice(movieIndex, 1);
+    res.status(200).send("Movie deleted successfully");
+};
+
+const updateMovie = (req, res) => {
+  const id = parseInt(req.params.id);
+  const movieIndex = movies.findIndex((movie) => movie.id === id);
+
+  if (movieIndex === -1) {
+      return res.status(404).send("Movie not found");
+  }
+
+  const updatedMovie = {
+      ...movies[movieIndex],
+      ...req.body
+  };
+
+  movies[movieIndex] = updatedMovie;
+  res.status(200).json(updatedMovie);
+};
+
 module.exports = {
-  getMovies,
-  getMovieById,
+    getMovies,
+    getMovieById,
+    postMovie,
+    deleteMovie,
+    updateMovie, 
 };

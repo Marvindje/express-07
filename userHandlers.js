@@ -1,5 +1,5 @@
 const argon2 = require('argon2');
-const db = require('./dbConnection'); // Assurez-vous d'avoir une connexion à votre base de données ici
+// \ connexion à la base de données ici
 
 async function postUser(req, res) {
     try {
@@ -50,9 +50,27 @@ async function getUser(req, res) {
         res.status(500).send({ error: "Erreur lors de la récupération de l'utilisateur" });
     }
 }
+const getUserByEmailWithPasswordAndPassToNext = (req, res, next) => {
+    const { email } = req.body;
+  
+    db.query("select * from users where email = ?", [email])
+      .then(([users]) => {
+        if (users[0] != null) {
+          req.user = users[0];
+          next();
+        } else {
+          res.sendStatus(401);
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+        res.status(500).send("Error retrieving data from database");
+      });
+  };
 
 module.exports = {
     postUser,
     updateUser,
-    getUser
+    getUser,
+    getUserByEmailWithPasswordAndPassToNext,
 };
